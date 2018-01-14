@@ -4,7 +4,7 @@ export const createLights = scene => {
   const ambientLight = new THREE.AmbientLight(0xb0b0b0);
   scene.add(ambientLight);
 
-  const pointLight = new THREE.PointLight(0xbbbbbb, 1, 0);
-  pointLight.position.set(-100, 100, 100);
+  const pointLight = new THREE.PointLight(0xbbbbbb, 3, 200);
+  pointLight.position.set(-30, 30, 30);
   scene.add(pointLight);
 };

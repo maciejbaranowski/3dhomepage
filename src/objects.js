@@ -6,6 +6,7 @@ export const createFloor = scene => {
   let mesh = new THREE.Mesh(geometry, floorMaterial);
   mesh.rotation.x = THREE.Math.degToRad(-90);
   scene.add(mesh);
+  return mesh;
 };
 
 export const createSky = scene => {
@@ -14,50 +15,51 @@ export const createSky = scene => {
   geometry.scale(-1, 1, 1);
   let mesh = new THREE.Mesh(geometry, skyMaterials);
   scene.add(mesh);
+  return mesh;
 };
 
-export const createBox = (scene, position) => {
-  var geometry = new THREE.BoxGeometry(1, 1, 1);
-  var cube = new THREE.Mesh(geometry, greenShinyMaterial);
-  cube.position.x = position[0];
-  cube.position.y = position[1];
-  cube.position.z = position[2];
-  scene.add(cube);
+const createIndicatorBox = (scene, position) => {
+  var geometry = new THREE.IcosahedronGeometry(0.8);
+  var mesh = new THREE.Mesh(geometry, greenShinyMaterial);
+  mesh.position.set(position[0], position[1], position[2]);
   setInterval(() => {
-    cube.rotation.x += 0.03;
-    cube.rotation.y += 0.03;
+    mesh.rotation.x += 0.03;
+    mesh.rotation.y += 0.03;
   }, 30);
+  scene.add(mesh);
+  return mesh;
 };
 
-export const addLink = (scene, font, text, position) => {
+const createLinkText = (scene, font, text) => {
   let geometry = new THREE.TextGeometry(text, {
     font: font,
     size: 2,
     height: 0.2,
     curveSegments: 30
   });
-  let meshText = new THREE.Mesh(geometry, textMaterial);
-  meshText.position.x = position[0];
-  meshText.position.y = position[1];
-  meshText.position.z = position[2];
-  meshText.lookAt(0, 0, 0);
-  scene.add(meshText);
+  let mesh = new THREE.Mesh(geometry, textMaterial);
   geometry.computeBoundingBox();
-  geometry.computeBoundingSphere();
-  let bulbPosition = new THREE.Vector3();
-  bulbPosition.x = (geometry.boundingBox.max.x + geometry.boundingBox.min.x) / 2;
-  bulbPosition.y = (geometry.boundingBox.max.y + geometry.boundingBox.min.y) / 2;
-  bulbPosition.z = (geometry.boundingBox.max.z + geometry.boundingBox.min.z) / 2;
-  bulbPosition = meshText.localToWorld(bulbPosition);
-  createBox(scene, [bulbPosition.x, bulbPosition.y, bulbPosition.z]);
+  mesh.position.x = -geometry.boundingBox.max.x / 2;
+  scene.add(mesh);
+  return mesh;
+};
+
+const createLinkGroup = (scene, font, text, position) => {
+  let group = new THREE.Object3D();
+  let box = createIndicatorBox(group, [0, 3, 0]);
+  let linkText = createLinkText(group, font, text);
+  group.position.set(...position);
+  group.lookAt(0, 0, 0);
+  scene.add(group);
+  return group;
 };
 
 export const createLinks = scene => {
   let fontLoader = new THREE.FontLoader();
   fontLoader.load("../node_modules/three/examples/fonts/helvetiker_regular.typeface.json", function(font) {
-    addLink(scene, font, "Bergsoft.pl", [20, 2, 20]);
-    addLink(scene, font, "Google.com", [-20, 2, 20]);
-    addLink(scene, font, "Onet.pl", [20, 2, -20]);
-    addLink(scene, font, "E-mail", [-20, 2, -20]);
+    createLinkGroup(scene, font, "Bergsoft.pl", [20, 2, 20]);
+    createLinkGroup(scene, font, "Google.com", [-20, 2, 20]);
+    createLinkGroup(scene, font, "Onet.pl", [20, 2, -20]);
+    createLinkGroup(scene, font, "E-mail", [-20, 2, -20]);
   });
 };
