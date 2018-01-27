@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { floorMaterial, greenShinyMaterial, skyMaterials, textMaterial, woodenFenceMaterial } from "./materials";
-import { setSlightBouncingAnimation, setRotationAnimation } from "./behaviours";
+import { setSlightBouncingAnimation, setRotationAnimation, setFlyingAroundAnimation } from "./behaviours";
 import * as THREEOBJ from "./OBJLoader";
 import * as THREEMTL from "./MTLLoader";
 
@@ -121,15 +121,42 @@ const loadAndPlaceMultiple = (scene, object, scale, positions) => {
     scene.add(clone);
   });
 };
+
+const getRandomPosition = () => {
+  console.log("A");
+  return [Math.random() * 50 - 25, Math.random() * 50 - 25];
+};
+
 const createTrees = scene => {
   loadObjMtl("Oak_Tree", object => {
-    loadAndPlaceMultiple(scene, object.children[0], 2, [[-25, -8], [-15, 21], [8, 26], [22, 3]]);
+    loadAndPlaceMultiple(scene, object.children[0], 2, [[-27, -8], [-15, 27], [8, 26], [24, 3]]);
   });
   loadObjMtl("Poplar_Tree", object => {
-    loadAndPlaceMultiple(scene, object.children[0], 2, [[-28, -22], [-21, 23], [22, 21], [22, -18]]);
+    loadAndPlaceMultiple(scene, object.children[0], 2, [[-28, -28], [-28, 28], [28, 28], [28, -28]]);
+  });
+  loadObjMtl("Carrot", object => {
+    object.children[0].position.y = -0.5;
+    let positions = [...new Array(100)];
+    positions = positions.map(getRandomPosition);
+
+    console.log(positions);
+    loadAndPlaceMultiple(scene, object.children[0], 0.5, positions);
   });
 };
 
+const createPlane = scene => {
+  loadObjMtl("Plane", object => {
+    object.scale.x = 0.01;
+    object.scale.z = 0.01;
+    object.scale.y = 0.01;
+    object.position.y = 10;
+    object.position.z = 50;
+    object.rotation.y = THREE.Math.degToRad(-90);
+    object.rotation.z = THREE.Math.degToRad(-30);
+    setFlyingAroundAnimation(object);
+    scene.add(object);
+  });
+};
 export const createLinks = scene => {
   let fontLoader = new THREE.FontLoader();
   fontLoader.load("../node_modules/three/examples/fonts/helvetiker_regular.typeface.json", function(font) {
@@ -140,4 +167,5 @@ export const createLinks = scene => {
   });
   createTrees(scene);
   createFence(scene);
+  createPlane(scene);
 };

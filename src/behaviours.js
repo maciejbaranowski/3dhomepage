@@ -45,6 +45,20 @@ export const setRotationAnimation = mesh => {
   });
 };
 
+export const setFlyingAroundAnimation = mesh => {
+  let currentRadPosition = 0;
+  const r = 50;
+  let animation = {
+    animate: () => {
+      mesh.position.x = r * Math.cos(currentRadPosition);
+      mesh.position.z = r * Math.sin(currentRadPosition);
+      mesh.rotation.y = Math.PI - currentRadPosition;
+      currentRadPosition += 0.003;
+    }
+  };
+  animationObservers.push(animation);
+};
+
 export const setSlightBouncingAnimation = mesh => {
   let currentOffset = 0;
   let currentDirection = true;
