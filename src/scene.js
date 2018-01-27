@@ -3,11 +3,13 @@ import * as THREE from "three";
 import FPC from "./FirstPersonControls";
 import { createFloor, createLinks, createSky } from "./objects";
 import { createLights } from "./lights";
+import { actBehaviours } from "./behaviours";
 
 export const loop = (renderer, scene, camera, controls) => {
   let clock = new THREE.Clock();
   const animate = () => {
     controls.update(clock.getDelta());
+    actBehaviours(scene, camera);
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
   };
@@ -20,6 +22,8 @@ export const createRenderer = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.localClippingEnabled = true;
   document.body.appendChild(renderer.domElement);
   return renderer;
 };
@@ -30,6 +34,7 @@ export const createScene = () => {
   createSky(scene);
   createLinks(scene);
   createLights(scene);
+  scene.fog = new THREE.Fog(0xffffff, 10, 1000);
   return scene;
 };
 

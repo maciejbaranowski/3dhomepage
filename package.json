@@ -4,17 +4,12 @@
   "description": "",
   "main": "index.js",
   "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ],
-    "plugins": [
-      "transform-class-properties"
-    ]
+    "presets": ["es2015", "react"],
+    "plugins": ["transform-class-properties"]
   },
   "scripts": {
     "build": "webpack --progress --profile --config ./webpack.js",
-    "start": "webpack-dev-server --progress --profile --config ./webpack.js"
+    "start": "webpack-dev-server --progress --profile --config ./webpack.js --port 80 --host 0.0.0.0"
   },
   "author": "",
   "license": "ISC",

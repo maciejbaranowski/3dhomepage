@@ -6,5 +6,6 @@ export const createLights = scene => {
 
   const pointLight = new THREE.PointLight(0xbbbbbb, 3, 200);
   pointLight.position.set(-30, 30, 30);
+  pointLight.castShadow = true;
   scene.add(pointLight);
 };

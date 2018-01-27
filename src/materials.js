@@ -44,6 +44,11 @@ export const greenShinyMaterial = new THREE.MeshStandardMaterial({
   roughness: 0.1,
   metalness: 0.6
 });
+export const woodenFenceMaterial = new THREE.MeshStandardMaterial({
+  color: 0x745d23,
+  roughness: 1,
+  metalness: 0.1
+});
 export const skyMaterials = [
   loadTexture("../textures/px.jpg", textureBuffer), // right
   loadTexture("../textures/nx.jpg", textureBuffer), // left

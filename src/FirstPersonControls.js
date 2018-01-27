@@ -46,22 +46,21 @@ class FirstPersonControls {
 
     this.border = {
       x: {
-        p: 30,
-        n: -30
+        p: 27,
+        n: -27
       },
       y: {
         p: 10,
         n: 0.5
       },
       z: {
-        p: 30,
-        n: -30
+        p: 27,
+        n: -27
       }
     };
     if (this.domElement !== document) {
       this.domElement.setAttribute("tabindex", -1);
     }
-    //
 
     this.handleResize = function() {
       if (this.domElement === document) {

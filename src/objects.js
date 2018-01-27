@@ -1,10 +1,14 @@
 import * as THREE from "three";
-import { floorMaterial, greenShinyMaterial, skyMaterials, textMaterial } from "./materials";
+import { floorMaterial, greenShinyMaterial, skyMaterials, textMaterial, woodenFenceMaterial } from "./materials";
+import { setSlightBouncingAnimation, setRotationAnimation } from "./behaviours";
+import * as THREEOBJ from "./OBJLoader";
+import * as THREEMTL from "./MTLLoader";
 
 export const createFloor = scene => {
   let geometry = new THREE.PlaneGeometry(60, 60);
   let mesh = new THREE.Mesh(geometry, floorMaterial);
   mesh.rotation.x = THREE.Math.degToRad(-90);
+  mesh.receiveShadow = true;
   scene.add(mesh);
   return mesh;
 };
@@ -22,10 +26,7 @@ const createIndicatorBox = (scene, position) => {
   var geometry = new THREE.IcosahedronGeometry(0.8);
   var mesh = new THREE.Mesh(geometry, greenShinyMaterial);
   mesh.position.set(position[0], position[1], position[2]);
-  setInterval(() => {
-    mesh.rotation.x += 0.03;
-    mesh.rotation.y += 0.03;
-  }, 30);
+  setRotationAnimation(mesh);
   scene.add(mesh);
   return mesh;
 };
@@ -35,11 +36,17 @@ const createLinkText = (scene, font, text) => {
     font: font,
     size: 2,
     height: 0.2,
-    curveSegments: 30
+    curveSegments: 30,
+    bevelEnabled: true,
+    bevelThickness: 0.1,
+    bevelSize: 0.1,
+    bevelSegments: 2
   });
   let mesh = new THREE.Mesh(geometry, textMaterial);
+  mesh.castShadow = true;
   geometry.computeBoundingBox();
   mesh.position.x = -geometry.boundingBox.max.x / 2;
+  setSlightBouncingAnimation(mesh);
   scene.add(mesh);
   return mesh;
 };
@@ -54,6 +61,75 @@ const createLinkGroup = (scene, font, text, position) => {
   return group;
 };
 
+const createFence = scene => {
+  var objLoader = new THREE.OBJLoader();
+  objLoader.load("../models/Picket Fence.obj", object => {
+    let fenceMiddle = object.children[1];
+    fenceMiddle.scale.x = 0.1;
+    fenceMiddle.scale.y = 0.1;
+    fenceMiddle.scale.z = 0.1;
+    fenceMiddle.material = woodenFenceMaterial;
+    fenceMiddle.castShadow = true;
+    for (let i = 0; i < 24; i++) {
+      let clone = fenceMiddle.clone();
+      clone.position.x = i * 2.5 - 30.5;
+      clone.position.z = -27;
+      scene.add(clone);
+    }
+    for (let i = 0; i < 24; i++) {
+      let clone = fenceMiddle.clone();
+      clone.position.x = i * 2.5 - 30.5;
+      clone.position.z = 33;
+      scene.add(clone);
+    }
+    for (let i = 0; i < 24; i++) {
+      let clone = fenceMiddle.clone();
+      clone.position.x = 32.75;
+      clone.position.z = i * 2.5 - 26.75;
+      clone.rotation.y = THREE.Math.degToRad(90);
+      scene.add(clone);
+    }
+    for (let i = 0; i < 24; i++) {
+      let clone = fenceMiddle.clone();
+      clone.position.x = -27;
+      clone.position.z = i * 2.5 - 26.75;
+      clone.rotation.y = THREE.Math.degToRad(90);
+      scene.add(clone);
+    }
+  });
+};
+
+const loadObjMtl = (name, callback) => {
+  var mtlLoader = new THREE.MTLLoader();
+  mtlLoader.setTexturePath("../models/");
+  mtlLoader.setPath("../models/");
+  mtlLoader.load(name + ".mtl", function(materials) {
+    materials.preload();
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials(materials);
+    objLoader.load("../models/" + name + ".obj", callback);
+  });
+};
+
+const loadAndPlaceMultiple = (scene, object, scale, positions) => {
+  object.geometry.scale(scale, scale, scale);
+  object.castShadow = true;
+  positions.forEach(position => {
+    let clone = object.clone();
+    clone.position.x = position[0];
+    clone.position.z = position[1];
+    scene.add(clone);
+  });
+};
+const createTrees = scene => {
+  loadObjMtl("Oak_Tree", object => {
+    loadAndPlaceMultiple(scene, object.children[0], 2, [[-25, -8], [-15, 21], [8, 26], [22, 3]]);
+  });
+  loadObjMtl("Poplar_Tree", object => {
+    loadAndPlaceMultiple(scene, object.children[0], 2, [[-28, -22], [-21, 23], [22, 21], [22, -18]]);
+  });
+};
+
 export const createLinks = scene => {
   let fontLoader = new THREE.FontLoader();
   fontLoader.load("../node_modules/three/examples/fonts/helvetiker_regular.typeface.json", function(font) {
@@ -62,4 +138,6 @@ export const createLinks = scene => {
     createLinkGroup(scene, font, "Onet.pl", [20, 2, -20]);
     createLinkGroup(scene, font, "E-mail", [-20, 2, -20]);
   });
+  createTrees(scene);
+  createFence(scene);
 };
