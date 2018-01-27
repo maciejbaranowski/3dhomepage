@@ -1,31 +1,23 @@
+const collisionObservers = [];
+const animationObservers = [];
+
 const isNearby = (pos, x, z) => {
   const e = 2;
   return pos.x >= x - e && pos.x <= x + e && pos.z >= z - e && pos.z <= z + e;
 };
 
 const fadeAndRedirect = url => {
-  window.location.replace(url);
+  window.location = url;
   document.getElementsByTagName("canvas")[0].style.opacity = 0.01;
 };
 
-const collisionObservers = [
-  position => {
-    if (isNearby(position, 20, 20)) {
-      fadeAndRedirect("http://bergsoft.pl");
+export const setTeleportAnimation = (mesh, url) => {
+  collisionObservers.push(position => {
+    if (isNearby(position, mesh.position.x, mesh.position.z)) {
+      fadeAndRedirect(url);
     }
-    if (isNearby(position, -20, 20)) {
-      fadeAndRedirect("http://google.com");
-    }
-    if (isNearby(position, 20, -20)) {
-      fadeAndRedirect("http://onet.pl");
-    }
-    if (isNearby(position, -20, -20)) {
-      fadeAndRedirect("http://poczta.onet.pl");
-    }
-  }
-];
-
-const animationObservers = [];
+  });
+};
 
 export const actBehaviours = (scene, camera) => {
   collisionObservers.forEach(e => {

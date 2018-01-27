@@ -39,8 +39,8 @@ const createFloorMaterial = textureBuffer => {
 export const textMaterial = new THREE.MeshPhongMaterial({ color: 0xdd0000, shininess: 30 });
 export const normalMaterial = new THREE.MeshNormalMaterial();
 export const floorMaterial = createFloorMaterial(textureBuffer);
-export const greenShinyMaterial = new THREE.MeshStandardMaterial({
-  color: 0x44dd44,
+export const redShinyMaterial = new THREE.MeshStandardMaterial({
+  color: 0xdd1111,
   roughness: 0.1,
   metalness: 0.6
 });

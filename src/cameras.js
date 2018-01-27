@@ -11,7 +11,7 @@ export const createCamera = () => {
   camera.position.y = 5;
   window.addEventListener("resize", event => {
     camera.aspect = window.innerWidth / window.innerHeight;
-    console.log(camera.aspect);
+    camera.updateProjectionMatrix();
   });
 
   return camera;

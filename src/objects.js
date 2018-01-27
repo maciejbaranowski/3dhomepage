@@ -1,6 +1,11 @@
 import * as THREE from "three";
-import { floorMaterial, greenShinyMaterial, skyMaterials, textMaterial, woodenFenceMaterial } from "./materials";
-import { setSlightBouncingAnimation, setRotationAnimation, setFlyingAroundAnimation } from "./behaviours";
+import { floorMaterial, redShinyMaterial, skyMaterials, textMaterial, woodenFenceMaterial } from "./materials";
+import {
+  setSlightBouncingAnimation,
+  setRotationAnimation,
+  setFlyingAroundAnimation,
+  setTeleportAnimation
+} from "./behaviours";
 import * as THREEOBJ from "./OBJLoader";
 import * as THREEMTL from "./MTLLoader";
 
@@ -24,7 +29,7 @@ export const createSky = scene => {
 
 const createIndicatorBox = (scene, position) => {
   var geometry = new THREE.IcosahedronGeometry(0.8);
-  var mesh = new THREE.Mesh(geometry, greenShinyMaterial);
+  var mesh = new THREE.Mesh(geometry, redShinyMaterial);
   mesh.position.set(position[0], position[1], position[2]);
   setRotationAnimation(mesh);
   scene.add(mesh);
@@ -51,12 +56,13 @@ const createLinkText = (scene, font, text) => {
   return mesh;
 };
 
-const createLinkGroup = (scene, font, text, position) => {
+const createLinkGroup = (scene, font, text, url, position) => {
   let group = new THREE.Object3D();
   let box = createIndicatorBox(group, [0, 3, 0]);
   let linkText = createLinkText(group, font, text);
   group.position.set(...position);
   group.lookAt(0, 0, 0);
+  setTeleportAnimation(group, url);
   scene.add(group);
   return group;
 };
@@ -123,7 +129,6 @@ const loadAndPlaceMultiple = (scene, object, scale, positions) => {
 };
 
 const getRandomPosition = () => {
-  console.log("A");
   return [Math.random() * 50 - 25, Math.random() * 50 - 25];
 };
 
@@ -138,8 +143,6 @@ const createTrees = scene => {
     object.children[0].position.y = -0.5;
     let positions = [...new Array(100)];
     positions = positions.map(getRandomPosition);
-
-    console.log(positions);
     loadAndPlaceMultiple(scene, object.children[0], 0.5, positions);
   });
 };
@@ -160,10 +163,10 @@ const createPlane = scene => {
 export const createLinks = scene => {
   let fontLoader = new THREE.FontLoader();
   fontLoader.load("../node_modules/three/examples/fonts/helvetiker_regular.typeface.json", function(font) {
-    createLinkGroup(scene, font, "Bergsoft.pl", [20, 2, 20]);
-    createLinkGroup(scene, font, "Google.com", [-20, 2, 20]);
-    createLinkGroup(scene, font, "Onet.pl", [20, 2, -20]);
-    createLinkGroup(scene, font, "E-mail", [-20, 2, -20]);
+    createLinkGroup(scene, font, "Bergsoft.pl", "http://bergsoft.pl", [20, 2, 20]);
+    createLinkGroup(scene, font, "Google.com", "http://google.com", [-20, 2, 20]);
+    createLinkGroup(scene, font, "Facebook.com", "http://facebook.com", [20, 2, -20]);
+    createLinkGroup(scene, font, "E-mail", "http://poczta.onet.pl", [-20, 2, -20]);
   });
   createTrees(scene);
   createFence(scene);
