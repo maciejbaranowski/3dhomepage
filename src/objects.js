@@ -69,7 +69,7 @@ const createLinkGroup = (scene, font, text, url, position) => {
 
 const createFence = scene => {
   var objLoader = new THREE.OBJLoader();
-  objLoader.load("../models/Picket Fence.obj", object => {
+  objLoader.load("./models/Picket Fence.obj", object => {
     let fenceMiddle = object.children[1];
     fenceMiddle.scale.x = 0.1;
     fenceMiddle.scale.y = 0.1;
@@ -107,13 +107,13 @@ const createFence = scene => {
 
 const loadObjMtl = (name, callback) => {
   var mtlLoader = new THREE.MTLLoader();
-  mtlLoader.setTexturePath("../models/");
-  mtlLoader.setPath("../models/");
+  mtlLoader.setTexturePath("./models/");
+  mtlLoader.setPath("./models/");
   mtlLoader.load(name + ".mtl", function(materials) {
     materials.preload();
     var objLoader = new THREE.OBJLoader();
     objLoader.setMaterials(materials);
-    objLoader.load("../models/" + name + ".obj", callback);
+    objLoader.load("./models/" + name + ".obj", callback);
   });
 };
 
@@ -162,7 +162,7 @@ const createPlane = scene => {
 };
 export const createLinks = scene => {
   let fontLoader = new THREE.FontLoader();
-  fontLoader.load("../node_modules/three/examples/fonts/helvetiker_regular.typeface.json", function(font) {
+  fontLoader.load("./textures/helvetiker_regular.typeface.json", function(font) {
     createLinkGroup(scene, font, "Bergsoft.pl", "http://bergsoft.pl", [20, 2, 20]);
     createLinkGroup(scene, font, "Google.com", "http://google.com", [-20, 2, 20]);
     createLinkGroup(scene, font, "Facebook.com", "http://facebook.com", [20, 2, -20]);

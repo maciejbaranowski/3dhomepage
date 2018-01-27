@@ -26,7 +26,7 @@ let textureBuffer = prepareTextureLoading();
 
 const createFloorMaterial = textureBuffer => {
   let loader = new THREE.TextureLoader();
-  let texture = loader.load("../textures/grass.jpg", function(texture) {
+  let texture = loader.load("./textures/grass.jpg", function(texture) {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.offset.set(0, 0);
     texture.repeat.set(30, 30);
@@ -50,10 +50,10 @@ export const woodenFenceMaterial = new THREE.MeshStandardMaterial({
   metalness: 0.1
 });
 export const skyMaterials = [
-  loadTexture("../textures/px.jpg", textureBuffer), // right
-  loadTexture("../textures/nx.jpg", textureBuffer), // left
-  loadTexture("../textures/py.jpg", textureBuffer), // top
-  loadTexture("../textures/ny.jpg", textureBuffer), // bottom
-  loadTexture("../textures/pz.jpg", textureBuffer), // back
-  loadTexture("../textures/nz.jpg", textureBuffer) // front
+  loadTexture("./textures/px.jpg", textureBuffer), // right
+  loadTexture("./textures/nx.jpg", textureBuffer), // left
+  loadTexture("./textures/py.jpg", textureBuffer), // top
+  loadTexture("./textures/ny.jpg", textureBuffer), // bottom
+  loadTexture("./textures/pz.jpg", textureBuffer), // back
+  loadTexture("./textures/nz.jpg", textureBuffer) // front
 ];
