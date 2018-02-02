@@ -1,8 +1,8 @@
 {
-  "name": "three-test",
-  "version": "1.0.0",
+  "name": "3dhomepage",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "index.html",
   "babel": {
     "presets": [
       "es2015",
@@ -16,7 +16,7 @@
     "build": "webpack --progress --profile --config ./webpack.js",
     "start": "webpack-dev-server --progress --profile --config ./webpack.js --port 80 --host 0.0.0.0"
   },
-  "author": "",
+  "author": "Maciej Baranowski",
   "license": "ISC",
   "dependencies": {
     "three": "^0.89.0"

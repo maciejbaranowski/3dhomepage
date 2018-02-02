@@ -160,13 +160,13 @@ const createPlane = scene => {
     scene.add(object);
   });
 };
-export const createLinks = scene => {
+export const createLinks = (scene, urls) => {
   let fontLoader = new THREE.FontLoader();
   fontLoader.load("./textures/helvetiker_regular.typeface.json", function(font) {
-    createLinkGroup(scene, font, "Bergsoft.pl", "http://bergsoft.pl", [20, 2, 20]);
-    createLinkGroup(scene, font, "Google.com", "http://google.com", [-20, 2, 20]);
-    createLinkGroup(scene, font, "Facebook.com", "http://facebook.com", [20, 2, -20]);
-    createLinkGroup(scene, font, "E-mail", "http://poczta.onet.pl", [-20, 2, -20]);
+    createLinkGroup(scene, font, urls[0].title, urls[0].url, [20, 2, 20]);
+    createLinkGroup(scene, font, urls[1].title, urls[1].url, [-20, 2, 20]);
+    createLinkGroup(scene, font, urls[2].title, urls[2].url, [20, 2, -20]);
+    createLinkGroup(scene, font, urls[3].title, urls[3].url, [-20, 2, -20]);
   });
   createTrees(scene);
   createFence(scene);

@@ -28,11 +28,11 @@ export const createRenderer = () => {
   return renderer;
 };
 
-export const createScene = () => {
+export const createScene = sceneParameters => {
   let scene = new THREE.Scene();
   createFloor(scene);
   createSky(scene);
-  createLinks(scene);
+  createLinks(scene, sceneParameters.urls);
   createLights(scene);
   scene.fog = new THREE.Fog(0xffffff, 10, 1000);
   return scene;
