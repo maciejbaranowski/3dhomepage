@@ -7,7 +7,7 @@ export const createInitialInformationDiv = () => {
 };
 
 const fullScreenModalStyle = {
-  background: "rgba(255, 255, 255, 0.5)",
+  background: "rgba(255, 255, 255, 0.8)",
   position: "fixed",
   top: "50px",
   left: "50px",
@@ -17,7 +17,8 @@ const fullScreenModalStyle = {
   paddingLeft: "20px",
   paddingRight: "20px",
   paddingTop: "50px",
-  paddingBottom: "10px"
+  paddingBottom: "10px",
+  borderRadius: "10px"
 };
 
 const createDismissableInfoModal = text => {
@@ -32,7 +33,7 @@ const createDismissableInfoModal = text => {
     });
   };
   closeButton.innerHTML = "OK";
-  closeButton.className = "pure-button";
+  closeButton.className = "pure-button pure-button-primary";
   closeButton.style.bottom = "50px";
   closeButton.style.position = "absolute";
   modal.appendChild(closeButton);

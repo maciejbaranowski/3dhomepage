@@ -163,10 +163,15 @@ const createPlane = scene => {
 export const createLinks = (scene, urls) => {
   let fontLoader = new THREE.FontLoader();
   fontLoader.load("./textures/helvetiker_regular.typeface.json", function(font) {
-    createLinkGroup(scene, font, urls[0].title, urls[0].url, [20, 2, 20]);
-    createLinkGroup(scene, font, urls[1].title, urls[1].url, [-20, 2, 20]);
-    createLinkGroup(scene, font, urls[2].title, urls[2].url, [20, 2, -20]);
-    createLinkGroup(scene, font, urls[3].title, urls[3].url, [-20, 2, -20]);
+    const numberOfUrls = urls.length;
+    const angleInterval = 360 / numberOfUrls;
+    urls.forEach((url, i) => {
+      createLinkGroup(scene, font, url.title, url.url, [
+        Math.sin(THREE.Math.degToRad(i * angleInterval)) * 25,
+        2,
+        Math.cos(THREE.Math.degToRad(i * angleInterval)) * 25
+      ]);
+    });
   });
   createTrees(scene);
   createFence(scene);
