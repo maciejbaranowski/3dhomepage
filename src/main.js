@@ -5,7 +5,7 @@ import { create3d } from "./scene";
 import { InputForm } from "./inputform";
 
 Object.assign(document.body.style, {
-  background: 'url("./textures/background.png")',
+  background: 'url("./textures/background.jpg")',
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center center",
   backgroundAttachment: "fixed",
