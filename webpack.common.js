@@ -1,6 +1,5 @@
 var path = require("path");
 var webpack = require("webpack");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   entry: "./src/main.js",
@@ -21,13 +20,5 @@ module.exports = {
         loader: "style-loader!css-loader"
       }
     ]
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("development")
-      }
-    }) //,
-    //new UglifyJSPlugin()
-  ]
+  }
 };

@@ -57,7 +57,21 @@ export class InputForm extends React.Component {
   ];
 
   render = () => (
-    <div className="pure-g">
+    <div
+      className="pure-g"
+      style={{
+        background: 'url("./textures/background.jpg")',
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+        backgroundOpacity: 0.5,
+        fontFamily: "Open Sans",
+        width: "100%",
+        height: "100%",
+        position: "absolute"
+      }}
+    >
       <div className="pure-u-1-6" />
       <div className="pure-u-2-3" style={{ textAlign: "center" }}>
         <form className="pure-form pure-form-aligned">

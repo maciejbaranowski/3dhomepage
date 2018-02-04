@@ -4,17 +4,12 @@
   "description": "",
   "main": "index.html",
   "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ],
-    "plugins": [
-      "transform-class-properties"
-    ]
+    "presets": ["es2015", "react"],
+    "plugins": ["transform-class-properties"]
   },
   "scripts": {
-    "build": "webpack --progress --profile --config ./webpack.js",
-    "start": "webpack-dev-server --progress --profile --config ./webpack.js --port 80 --host 0.0.0.0"
+    "build": "webpack --progress --profile --config ./webpack.prod.js",
+    "start": "webpack-dev-server --progress --profile --config ./webpack.dev.js --port 80 --host 0.0.0.0"
   },
   "author": "Maciej Baranowski",
   "license": "ISC",
@@ -31,8 +26,9 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.3",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1",
-    "uglifyjs-webpack-plugin": "^1.0.0-beta.3"
+    "webpack-merge": "^4.1.1"
   }
 }
