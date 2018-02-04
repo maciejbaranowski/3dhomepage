@@ -1,7 +1,7 @@
 import React from "react";
 
 const Button = props => (
-  <button className={"pure-button " + props.className} type="button" onClick={props.onClick}>
+  <button className={"pure-button " + props.className} type="button" onClick={props.onClick} style={props.style}>
     {props.value}
   </button>
 );
@@ -80,7 +80,7 @@ export class InputForm extends React.Component {
               })}
             </div>
             <table className="pure-table" style={{ width: "100%" }}>
-              <thead>
+              <thead style={{ textAlign: "center" }}>
                 <tr>
                   <th>Ścieżka</th>
                   <th>Tytuł</th>
@@ -121,17 +121,16 @@ export class InputForm extends React.Component {
               value="Dodaj kolejną stronę"
               className="pure-u-1"
             />
-            <div style={{ margin: "5px" }}>
-              <Button
-                onClick={() => {
-                  const urlParams = new URLSearchParams(location.search);
-                  urlParams.set("scene", JSON.stringify(this.state));
-                  window.location.href = `${location.pathname}?${urlParams}`;
-                }}
-                value="Stwórz scenę"
-                className="pure-button-primary"
-              />
-            </div>
+            <Button
+              onClick={() => {
+                const urlParams = new URLSearchParams(location.search);
+                urlParams.set("scene", JSON.stringify(this.state));
+                window.location.href = `${location.pathname}?${urlParams}`;
+              }}
+              value="Stwórz scenę"
+              style={{ fontSize: "150%", backgroundColor: "#d02020", margin: "25px" }}
+              className="pure-button-primary"
+            />
           </fieldset>
         </form>
       </div>

@@ -10,7 +10,8 @@ Object.assign(document.body.style, {
   backgroundPosition: "center center",
   backgroundAttachment: "fixed",
   backgroundSize: "cover",
-  backgroundOpacity: 0.5
+  backgroundOpacity: 0.5,
+  fontFamily: "Open Sans"
 });
 const urlParams = new URLSearchParams(location.search);
 if (urlParams.has("scene")) {

@@ -11,13 +11,9 @@ const fullScreenModalStyle = {
   position: "fixed",
   top: "50px",
   left: "50px",
-  bottom: "50px",
   right: "50px",
   textAlign: "center",
-  paddingLeft: "20px",
-  paddingRight: "20px",
-  paddingTop: "50px",
-  paddingBottom: "10px",
+  padding: "20px",
   borderRadius: "10px"
 };
 
@@ -34,8 +30,8 @@ const createDismissableInfoModal = text => {
   };
   closeButton.innerHTML = "OK";
   closeButton.className = "pure-button pure-button-primary";
-  closeButton.style.bottom = "50px";
-  closeButton.style.position = "absolute";
+  closeButton.style.marginTop = "20px";
+  closeButton.style.position = "relative";
   modal.appendChild(closeButton);
   document.body.appendChild(modal);
 };
