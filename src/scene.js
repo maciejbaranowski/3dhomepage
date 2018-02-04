@@ -3,9 +3,11 @@ import * as THREE from "three";
 import FPC from "./FirstPersonControls";
 import { createFloor, createLinks, createSky } from "./objects";
 import { createLights } from "./lights";
+import { createCamera } from "./cameras";
 import { actBehaviours } from "./behaviours";
+import { createInitialInformationDiv } from "./modals";
 
-export const loop = (renderer, scene, camera, controls) => {
+const loop = (renderer, scene, camera, controls) => {
   let clock = new THREE.Clock();
   const animate = () => {
     controls.update(clock.getDelta());
@@ -16,7 +18,7 @@ export const loop = (renderer, scene, camera, controls) => {
   animate(renderer, scene, camera, controls);
 };
 
-export const createRenderer = () => {
+const createRenderer = () => {
   let renderer = new THREE.WebGLRenderer({ antialias: true });
   window.addEventListener("resize", event => {
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -28,7 +30,7 @@ export const createRenderer = () => {
   return renderer;
 };
 
-export const createScene = sceneParameters => {
+const createScene = sceneParameters => {
   let scene = new THREE.Scene();
   createFloor(scene);
   createSky(scene);
@@ -38,6 +40,15 @@ export const createScene = sceneParameters => {
   return scene;
 };
 
-export const createControls = camera => {
+const createControls = camera => {
   return new FPC(camera);
+};
+
+export const create3d = sceneParameters => {
+  createInitialInformationDiv();
+  let renderer = createRenderer();
+  let camera = createCamera();
+  let controls = createControls(camera);
+  let scene = createScene(sceneParameters);
+  loop(renderer, scene, camera, controls);
 };

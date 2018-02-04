@@ -19,6 +19,8 @@
   "author": "Maciej Baranowski",
   "license": "ISC",
   "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "three": "^0.89.0"
   },
   "devDependencies": {
