@@ -162,7 +162,7 @@ const createPlane = scene => {
 };
 export const createLinks = (scene, urls) => {
   let fontLoader = new THREE.FontLoader();
-  fontLoader.load("./textures/helvetiker_regular.typeface.json", function(font) {
+  fontLoader.load("./textures/Open Sans_Regular.json", function(font) {
     const numberOfUrls = urls.length;
     const angleInterval = 360 / numberOfUrls;
     urls.forEach((url, i) => {
