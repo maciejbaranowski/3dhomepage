@@ -41,34 +41,19 @@ export class InputForm extends React.Component {
     this.setState({ urls });
   };
   exampleWebpages = [
-    {
-      title: "Google",
-      url: "http://www.google.com"
-    },
-    {
-      title: "Facebook",
-      url: "http://www.facebook.com"
-    },
-    {
-      title: "Twitter",
-      url: "http://www.twitter.com"
-    },
-    {
-      title: "Github",
-      url: "http://www.github.com"
-    },
-    {
-      title: "Wikipedia",
-      url: "http://www.wikipedia.com"
-    },
-    {
-      title: "Onet",
-      url: "http://www.onet.pl"
-    },
-    {
-      title: "Bergsoft",
-      url: "http://www.bergsoft.pl"
-    }
+    { title: "Google", url: "http://google.com" },
+    { title: "Facebook", url: "http://facebook.com" },
+    { title: "Twitter", url: "http://twitter.com" },
+    { title: "Github", url: "http://github.com" },
+    { title: "Wikipedia", url: "http://wikipedia.com" },
+    { title: "Onet", url: "http://onet.pl" },
+    { title: "Bergsoft", url: "http://bergsoft.pl" },
+    { title: "YouTube", url: "http://youtube.com" },
+    { title: "Reddit", url: "http://reddit.com" },
+    { title: "Amazon", url: "http://amazon.com" },
+    { title: "Allegro", url: "http://allegro.pl" },
+    { title: "Instagram", url: "http://instagram.com" },
+    { title: "LinkedId", url: "http://linkedin.com" }
   ];
 
   render = () => (
@@ -103,7 +88,7 @@ export class InputForm extends React.Component {
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody style={{ background: "white" }}>
                 {this.state.urls.map((url, i) => {
                   return (
                     <UrlSingleInput
