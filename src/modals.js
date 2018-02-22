@@ -1,9 +1,16 @@
-export const createInitialInformationDiv = () => {
-  createDismissableInfoModal(
-    "<div>Witaj w Twojej prywatnej stronie startowej w 3D. Sterowanie odbywa się za pomocą\
+export const createInitialInformationDiv = language => {
+  if (language == "pl")
+    createDismissableInfoModal(
+      "<div>Witaj w Twojej prywatnej stronie startowej w 3D. Sterowanie odbywa się za pomocą\
   klawiszy strzałek, lub WSAD. Możesz teraz dodać tę stronę do ulubionych, lub ustawić jako stronę startową, aby\
   łatwo do niej wrócić w dowolnym momencie!</div>"
-  );
+    );
+  else
+    createDismissableInfoModal(
+      "<div>Welcome your private 3d homepage. You can look around and walk with arrow keys\
+  or WSAD keys. You can now add this webpage to favoruites or set it up as your browser homepage\
+  to conveniently come back whenever you want!</div>"
+    );
 };
 
 const fullScreenModalStyle = {

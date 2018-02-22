@@ -1,4 +1,5 @@
 import React from "react";
+import lang from "./languageProvider";
 
 const Button = props => (
   <button className={"pure-button " + props.className} type="button" onClick={props.onClick} style={props.style}>
@@ -20,8 +21,17 @@ const UrlSingleInput = props => (
   </tr>
 );
 
-export class InputForm extends React.Component {
+export class App extends React.Component {
   constructor() {
+    let bodyStyle = document.getElementsByTagName("body")[0].style;
+    bodyStyle.background = 'url("./textures/background.jpg")';
+    bodyStyle.backgroundRepeat = "no-repeat";
+    bodyStyle.backgroundPosition = "center center";
+    bodyStyle.backgroundAttachment = "fixed";
+    bodyStyle.backgroundSize = "cover";
+    bodyStyle.backgroundOpacity = 0.5;
+    bodyStyle.fontFamily = "Open Sans";
+
     super();
     this.state = {
       urls: [
@@ -29,44 +39,24 @@ export class InputForm extends React.Component {
           title: "Google",
           url: "http://www.google.com"
         }
-      ]
+      ],
+      language: "pl"
     };
   }
   addUrl = url => {
     let urls = this.state.urls;
     if (this.state.urls.length >= 10) {
-      alert("Można dodać maksykalnie 10 stron!");
+      alert(lang.get().maxLimitReached);
+      return;
     }
     urls.push(url);
     this.setState({ urls });
   };
-  exampleWebpages = [
-    { title: "Google", url: "http://google.com" },
-    { title: "Facebook", url: "http://facebook.com" },
-    { title: "Twitter", url: "http://twitter.com" },
-    { title: "Github", url: "http://github.com" },
-    { title: "Wikipedia", url: "http://wikipedia.com" },
-    { title: "Onet", url: "http://onet.pl" },
-    { title: "Bergsoft", url: "http://bergsoft.pl" },
-    { title: "YouTube", url: "http://youtube.com" },
-    { title: "Reddit", url: "http://reddit.com" },
-    { title: "Amazon", url: "http://amazon.com" },
-    { title: "Allegro", url: "http://allegro.pl" },
-    { title: "Instagram", url: "http://instagram.com" },
-    { title: "LinkedId", url: "http://linkedin.com" }
-  ];
 
   render = () => (
     <div
       className="pure-g"
       style={{
-        background: 'url("./textures/background.jpg")',
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        backgroundAttachment: "fixed",
-        backgroundSize: "cover",
-        backgroundOpacity: 0.5,
-        fontFamily: "Open Sans",
         width: "100%",
         height: "100%",
         position: "absolute"
@@ -77,10 +67,17 @@ export class InputForm extends React.Component {
         <form className="pure-form pure-form-aligned">
           <fieldset>
             <h1>3D Homepage</h1>
+            <Button
+              value={lang.get().changeLanguage}
+              onClick={e => {
+                lang.toogleLanguage();
+                this.setState({ language: lang.language });
+              }}
+            />
             <div className="pure-g">
-              <p className="pure-u-1">Wybierz strony które najczęściej odwiedzasz, lub wpisz własne poniżej</p>
+              <p className="pure-u-1"> {lang.get().chooseOrTypePages}</p>
               <br />
-              {this.exampleWebpages.map((url, i) => {
+              {lang.get().exampleWebpages.map((url, i) => {
                 return (
                   <div style={{ margin: "5px" }} key={i}>
                     <Button
@@ -96,9 +93,9 @@ export class InputForm extends React.Component {
             <table className="pure-table" style={{ width: "100%" }}>
               <thead style={{ textAlign: "center" }}>
                 <tr>
-                  <th>Ścieżka</th>
-                  <th>Tytuł</th>
-                  <th>Usuń</th>
+                  <th>{lang.get().path}</th>
+                  <th>{lang.get().title}</th>
+                  <th>{lang.get().delete}</th>
                 </tr>
               </thead>
 
@@ -132,7 +129,7 @@ export class InputForm extends React.Component {
               onClick={() => {
                 this.addUrl({ title: "", url: "http://" });
               }}
-              value="Dodaj kolejną stronę"
+              value={lang.get().addAnother}
               className="pure-u-1"
             />
             <Button
@@ -141,7 +138,7 @@ export class InputForm extends React.Component {
                 urlParams.set("scene", JSON.stringify(this.state));
                 window.location.href = `${location.pathname}?${urlParams}`;
               }}
-              value="Stwórz scenę"
+              value={lang.get().createScene}
               style={{ fontSize: "150%", backgroundColor: "#d02020", margin: "25px" }}
               className="pure-button-primary"
             />

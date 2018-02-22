@@ -45,7 +45,7 @@ const createControls = camera => {
 };
 
 export const create3d = sceneParameters => {
-  createInitialInformationDiv();
+  createInitialInformationDiv(sceneParameters.language);
   let renderer = createRenderer();
   let camera = createCamera();
   let controls = createControls(camera);
