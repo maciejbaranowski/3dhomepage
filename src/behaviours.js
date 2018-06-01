@@ -7,6 +7,7 @@ const isNearby = (pos, x, z) => {
 };
 
 const fadeAndRedirect = url => {
+  collisionObservers.length = 0;
   window.location = url;
   document.getElementsByTagName("canvas")[0].style.opacity = 0.01;
 };
@@ -67,4 +68,28 @@ export const setSlightBouncingAnimation = mesh => {
     }
   };
   animationObservers.push(animation);
+};
+
+export const setBunnyMovementAnimation /*kicanie???*/ = mesh => {
+  /*******
+    Królik skacze w 30-klatkowej animacji po krzywej piłokształtnej
+    Do zmiany
+  *******/
+  let subanimationStep = 0;
+  let rotation = 0;
+  const speed = 0.02;
+  animationObservers.push({
+    animate: () => {
+      if (subanimationStep === 30) {
+        rotation = Math.random() * Math.PI * 2;
+        mesh.rotation.y = rotation;
+        subanimationStep = 0;
+      }
+      mesh.position.z += speed * Math.cos(rotation);
+      mesh.position.x += speed * Math.sin(rotation);
+      if (subanimationStep < 15) mesh.position.y += 0.03;
+      else mesh.position.y -= 0.03;
+      subanimationStep += 1;
+    }
+  });
 };

@@ -4,7 +4,8 @@ import {
   setSlightBouncingAnimation,
   setRotationAnimation,
   setFlyingAroundAnimation,
-  setTeleportAnimation
+  setTeleportAnimation,
+  setBunnyMovementAnimation
 } from "./behaviours";
 import * as THREEOBJ from "./OBJLoader";
 import * as THREEMTL from "./MTLLoader";
@@ -144,6 +145,13 @@ const createTrees = scene => {
     let positions = [...new Array(100)];
     positions = positions.map(getRandomPosition);
     loadAndPlaceMultiple(scene, object.children[0], 0.5, positions);
+  });
+  loadObjMtl("Rabbit", object => {
+    let rabbit = object.children[0];
+    rabbit.position.y = -0.05;
+    rabbit.castShadow = true;
+    scene.add(rabbit);
+    setBunnyMovementAnimation(rabbit);
   });
 };
 
