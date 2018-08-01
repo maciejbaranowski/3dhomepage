@@ -5,7 +5,9 @@ class FirstPersonControls {
     this.object = object;
     this.target = new THREE.Vector3(0, 0, 0);
 
-    this.domElement = domElement !== undefined ? domElement : document;
+    this.domElement = domElement !== undefined
+      ? domElement
+      : document;
 
     this.enabled = true;
 
@@ -59,118 +61,28 @@ class FirstPersonControls {
       }
     };
     if (this.domElement !== document) {
-      this.domElement.setAttribute("tabindex", -1);
+      this
+        .domElement
+        .setAttribute("tabindex", -1);
     }
 
-    this.handleResize = function() {
-      if (this.domElement === document) {
-        this.viewHalfX = window.innerWidth / 2;
-        this.viewHalfY = window.innerHeight / 2;
-      } else {
-        this.viewHalfX = this.domElement.offsetWidth / 2;
-        this.viewHalfY = this.domElement.offsetHeight / 2;
-      }
-    };
-
-    this.onKeyDown = function(event) {
-      //event.preventDefault();
-      switch (event.keyCode) {
-        case 38: /*up*/
-        case 87:
-          /*W*/ this.moveForward = true;
-          break;
-
-        case 37: /*left*/
-        case 65:
-          /*A*/ this.rotationX = -1;
-          break;
-
-        case 40: /*down*/
-        case 83:
-          /*S*/ this.moveBackward = true;
-          break;
-
-        case 39: /*right*/
-        case 68:
-          /*D*/ this.rotationX = 1;
-          break;
-
-        case 82:
-          /*R*/ this.moveUp = true;
-          break;
-        case 70:
-          /*F*/ this.moveDown = true;
-          break;
-      }
-    };
-
-    this.onKeyUp = function(event) {
-      switch (event.keyCode) {
-        case 38: /*up*/
-        case 87:
-          /*W*/ this.moveForward = false;
-          break;
-
-        case 37: /*left*/
-        case 65:
-          /*A*/ this.rotationX = 0;
-          break;
-
-        case 40: /*down*/
-        case 83:
-          /*S*/ this.moveBackward = false;
-          break;
-
-        case 39: /*right*/
-        case 68:
-          /*D*/ this.rotationX = 0;
-          break;
-
-        case 82:
-          /*R*/ this.moveUp = false;
-          break;
-        case 70:
-          /*F*/ this.moveDown = false;
-          break;
-      }
-    };
-
-    this.checkBorders = () => {
-      const checkSpecificBorder = (pos, border) => {
-        if (pos >= border.p) {
-          return border.p;
-        }
-        if (pos <= border.n) {
-          return border.n;
-        }
-        return pos;
-      };
-      this.object.position.x = checkSpecificBorder(this.object.position.x, this.border.x);
-      this.object.position.y = checkSpecificBorder(this.object.position.y, this.border.y);
-      this.object.position.z = checkSpecificBorder(this.object.position.z, this.border.z);
-    };
-
-    this.update = function(delta) {
-      if (this.enabled === false) return;
-      /*
-      if (this.heightSpeed) {
-        var y = THREE.Math.clamp(this.object.position.y, this.heightMin, this.heightMax);
-        var heightDelta = y - this.heightMin;
-
-        this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
-      } else {
-        this.autoSpeedFactor = 0.0;
-      }
-*/
+    this.update = function (delta) {
+      if (this.enabled === false) 
+        return;
       var actualMoveSpeed = delta * this.movementSpeed;
 
       if (this.moveForward || (this.autoForward && !this.moveBackward)) {
-        this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+        this
+          .object
+          .translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
       }
-      if (this.moveBackward) this.object.translateZ(actualMoveSpeed);
-      if (this.moveUp) this.object.translateY(actualMoveSpeed);
-      if (this.moveDown) this.object.translateY(-actualMoveSpeed);
-
+      if (this.moveBackward) 
+        this.object.translateZ(actualMoveSpeed);
+      if (this.moveUp) 
+        this.object.translateY(actualMoveSpeed);
+      if (this.moveDown) 
+        this.object.translateY(-actualMoveSpeed);
+      
       this.checkBorders();
 
       var actualLookSpeed = delta * this.lookSpeed;
@@ -187,15 +99,22 @@ class FirstPersonControls {
 
       this.lon += this.rotationX * actualLookSpeed;
 
-      if (this.lookVertical) this.lat -= this.rotationY * actualLookSpeed * verticalLookRatio;
-
+      if (this.lookVertical) 
+        this.lat -= this.rotationY * actualLookSpeed * verticalLookRatio;
+      
       this.lat = Math.max(-85, Math.min(85, this.lat));
-      this.phi = THREE.Math.degToRad(90 - this.lat);
+      this.phi = THREE
+        .Math
+        .degToRad(90 - this.lat);
 
-      this.theta = THREE.Math.degToRad(this.lon);
+      this.theta = THREE
+        .Math
+        .degToRad(this.lon);
 
       if (this.constrainVertical) {
-        this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
+        this.phi = THREE
+          .Math
+          .mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
       }
 
       var targetPosition = this.target,
@@ -203,36 +122,150 @@ class FirstPersonControls {
       targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
       targetPosition.y = position.y + 100 * Math.cos(this.phi);
       targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
-      this.object.lookAt(targetPosition);
+      this
+        .object
+        .lookAt(targetPosition);
     };
 
-    function contextmenu(event) {
-      event.preventDefault();
-    }
+    this
+      .domElement
+      .addEventListener("contextmenu", e => e.preventDefault(), false);
 
-    this.dispose = function() {
-      this.domElement.removeEventListener("contextmenu", contextmenu, false);
-
-      window.removeEventListener("keydown", _onKeyDown, false);
-      window.removeEventListener("keyup", _onKeyUp, false);
-    };
-
-    var _onKeyDown = bind(this, this.onKeyDown);
-    var _onKeyUp = bind(this, this.onKeyUp);
-
-    this.domElement.addEventListener("contextmenu", contextmenu, false);
-
-    window.addEventListener("keydown", _onKeyDown, false);
-    window.addEventListener("keyup", _onKeyUp, false);
-
-    function bind(scope, fn) {
-      return function() {
-        fn.apply(scope, arguments);
-      };
-    }
+    window.addEventListener("keydown", this.onKeyDown, false);
+    window.addEventListener("keyup", this.onKeyUp, false);
+    window.addEventListener("touchstart", this.handleStart, false);
+    window.addEventListener("touchend", this.handleEnd, false);
+    window.addEventListener("touchcancel", this.handleCancel, false);
+    window.addEventListener("touchmove", this.handleMove, false);
 
     this.handleResize();
   }
+  handleStart = () => {
+    console.log("started");
+  }
+  handleEnd = () => {
+    console.log("ended");
+  }
+  handleCancel = () => {
+    console.log("canceled");
+  }
+  handleMove = () => {
+    console.log("moved");
+  }
+
+  handleResize = () => {
+    if (this.domElement === document) {
+      this.viewHalfX = window.innerWidth / 2;
+      this.viewHalfY = window.innerHeight / 2;
+    } else {
+      this.viewHalfX = this.domElement.offsetWidth / 2;
+      this.viewHalfY = this.domElement.offsetHeight / 2;
+    }
+  };
+
+  onKeyDown = (event) => {
+    switch (event.keyCode) {
+      case 38:/*up*/
+      case 87:
+        /*W*/
+        this.moveForward = true;
+        break;
+
+      case 37:/*left*/
+      case 65:
+        /*A*/
+        this.rotationX = -1;
+        break;
+
+      case 40:/*down*/
+      case 83:
+        /*S*/
+        this.moveBackward = true;
+        break;
+
+      case 39:/*right*/
+      case 68:
+        /*D*/
+        this.rotationX = 1;
+        break;
+
+      case 82:
+        /*R*/
+        this.moveUp = true;
+        break;
+      case 70:
+        /*F*/
+        this.moveDown = true;
+        break;
+    }
+  };
+
+  onKeyUp = (event) => {
+    switch (event.keyCode) {
+      case 38:/*up*/
+      case 87:
+        /*W*/
+        this.moveForward = false;
+        break;
+
+      case 37:/*left*/
+      case 65:
+        /*A*/
+        this.rotationX = 0;
+        break;
+
+      case 40:/*down*/
+      case 83:
+        /*S*/
+        this.moveBackward = false;
+        break;
+
+      case 39:/*right*/
+      case 68:
+        /*D*/
+        this.rotationX = 0;
+        break;
+
+      case 82:
+        /*R*/
+        this.moveUp = false;
+        break;
+      case 70:
+        /*F*/
+        this.moveDown = false;
+        break;
+    }
+  };
+
+  checkBorders = () => {
+    const checkSpecificBorder = (pos, border) => {
+      if (pos >= border.p) {
+        return border.p;
+      }
+      if (pos <= border.n) {
+        return border.n;
+      }
+      return pos;
+    };
+    this.object.position.x = checkSpecificBorder(this.object.position.x, this.border.x);
+    this.object.position.y = checkSpecificBorder(this.object.position.y, this.border.y);
+    this.object.position.z = checkSpecificBorder(this.object.position.z, this.border.z);
+  };
+
+  dispose = () => {
+    this
+      .domElement
+      .removeEventListener("contextmenu", contextmenu, false);
+
+    window.removeEventListener("keydown", this.onKeyDown, false);
+    window.removeEventListener("keyup", this.onKeyUp, false);
+
+    window.removeEventListener("touchstart", this.handleStart, false);
+    window.removeEventListener("touchend", this.handleEnd, false);
+    window.removeEventListener("touchcancel", this.handleCancel, false);
+    window.removeEventListener("touchmove", this.handleMove, false);
+
+  };
 }
 
 export default FirstPersonControls;
