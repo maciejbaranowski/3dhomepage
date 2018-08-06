@@ -1,19 +1,27 @@
 import * as THREE from "three";
 
 import FPC from "./FirstPersonControls";
-import { createFloor, createLinks, createSky } from "./objects";
+import { ObjectsCreator } from "./objects";
 import { createLights } from "./lights";
 import { createCamera } from "./cameras";
 import { actBehaviours } from "./behaviours";
-import { createInitialInformationDiv } from "./modals";
+import { createLoadingManager  } from "./loadingManager"
+import RenderStats from "./threex.renderstats.js";
 
 const loop = (renderer, scene, camera, controls) => {
+  var rendererStats	= new RenderStats()
+  rendererStats.domElement.style.position	= 'absolute'
+  rendererStats.domElement.style.left	= '0px'
+  rendererStats.domElement.style.bottom	= '0px'
+  document.body.appendChild( rendererStats.domElement )
+
   let clock = new THREE.Clock();
   const animate = () => {
     controls.update(clock.getDelta());
     actBehaviours(scene, camera);
-    requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    rendererStats.update(renderer);
+    requestAnimationFrame(animate);
   };
   animate(renderer, scene, camera, controls);
 };
@@ -32,9 +40,10 @@ const createRenderer = () => {
 
 const createScene = sceneParameters => {
   let scene = new THREE.Scene();
-  createFloor(scene);
-  createSky(scene);
-  createLinks(scene, sceneParameters.urls);
+  let creator = new ObjectsCreator(createLoadingManager(sceneParameters.language));
+  creator.createFloor(scene);
+  creator.createSky(scene);
+  creator.createLinks(scene, sceneParameters.urls);
   createLights(scene);
   scene.fog = new THREE.Fog(0xffffff, 10, 1000);
   return scene;
@@ -45,7 +54,6 @@ const createControls = camera => {
 };
 
 export const create3d = sceneParameters => {
-  createInitialInformationDiv(sceneParameters.language);
   let renderer = createRenderer();
   let camera = createCamera();
   let controls = createControls(camera);

@@ -13,6 +13,17 @@ export const createInitialInformationDiv = language => {
     );
 };
 
+export const createLoadingModal = () => {
+  createModal("Ładowanie/Loading...", "loadingModal");
+};
+
+export const updateLoadingModal = (text) => {
+  document.querySelector(".loadingModal").innerHTML = text;
+}
+
+export const closeLoadingModal = () => {
+  document.querySelector(".loadingModal").remove();
+}
 const fullScreenModalStyle = {
   background: "rgba(255, 255, 255, 0.8)",
   position: "fixed",
@@ -25,10 +36,7 @@ const fullScreenModalStyle = {
 };
 
 const createDismissableInfoModal = text => {
-  let modal = document.createElement("div");
-  modal.className = "informationModal";
-  modal.innerHTML = text;
-  Object.assign(modal.style, fullScreenModalStyle);
+  let modal = createModal(text, "informationModal");
   let closeButton = document.createElement("button");
   closeButton.onclick = () => {
     Array.from(document.getElementsByClassName("informationModal")).forEach(e => {
@@ -40,5 +48,13 @@ const createDismissableInfoModal = text => {
   closeButton.style.marginTop = "20px";
   closeButton.style.position = "relative";
   modal.appendChild(closeButton);
-  document.body.appendChild(modal);
 };
+
+const createModal = (text, className) => {
+  let modal = document.createElement("div");
+  modal.className = className;
+  modal.innerHTML = text;
+  Object.assign(modal.style, fullScreenModalStyle);
+  document.body.appendChild(modal);
+  return modal;
+}
