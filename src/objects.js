@@ -3,6 +3,7 @@ import {floorMaterial, redShinyMaterial, skyMaterials, textMaterial, woodenFence
 import {setSlightBouncingAnimation, setRotationAnimation, setFlyingAroundAnimation, setTeleportAnimation, setBunnyMovementAnimation} from "./behaviours";
 import * as THREEOBJ from "./OBJLoader";
 import * as THREEMTL from "./MTLLoader";
+import threexRenderstats from "./threex.renderstats";
 
 export class ObjectsCreator {
   constructor(loadingManager) {
@@ -137,21 +138,23 @@ export class ObjectsCreator {
   };
 
   loadAndPlaceMultiple = (scene, object, scale, positions) => {
-    object
-      .geometry
-      .scale(scale, scale, scale);
-    object.castShadow = true;
+    let mergedGeometry = new THREE.Geometry();
+    let objectGeometry = new THREE.Geometry().fromBufferGeometry(object.geometry);
+    objectGeometry.scale(scale, scale, scale);
     positions.forEach(position => {
-      let clone = object.clone();
-      clone.position.x = position[0];
-      clone.position.z = position[1];
-      scene.add(clone);
+      let clone = objectGeometry.clone();
+      clone.translate(...position);
+      mergedGeometry.merge(clone);
     });
+    let mergedMesh = new THREE.Mesh(mergedGeometry, object.material);    
+    mergedMesh.castShadow = true;
+    scene.add(mergedMesh);
   };
 
-  getRandomPosition = () => {
+  getRandomPosition = (elevation) => {
     return [
       Math.random() * 50 - 25,
+      elevation,
       Math.random() * 50 - 25
     ];
   };
@@ -160,35 +163,34 @@ export class ObjectsCreator {
     this.loadObjMtl("Oak_Tree", object => {
       this.loadAndPlaceMultiple(scene, object.children[0], 2, [
         [
-          -27, -8
+          -27, 0, -8
         ],
         [
-          -15, 27
+          -15, 0, 27
         ],
         [
-          8, 26
+          8, 0, 26
         ],
-        [24, 3]
+        [24, 0, 3]
       ]);
     });
     this.loadObjMtl("Poplar_Tree", object => {
       this.loadAndPlaceMultiple(scene, object.children[0], 2, [
         [
-          -28, -28
+          -28, 0, -28
         ],
         [
-          -28, 28
+          -28, 0, 28
         ],
         [
-          28, 28
+          28, 0, 28
         ],
-        [28, -28]
+        [28, 0, -28]
       ]);
     });
     this.loadObjMtl("Carrot", object => {
-      object.children[0].position.y = -0.5;
       let positions = [...new Array(100)];
-      positions = positions.map(this.getRandomPosition);
+      positions = positions.map(()=>this.getRandomPosition(-0.5));
       this.loadAndPlaceMultiple(scene, object.children[0], 0.5, positions);
     });
     this.loadObjMtl("Rabbit", object => {
