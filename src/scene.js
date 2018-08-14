@@ -9,12 +9,7 @@ import { createLoadingManager  } from "./loadingManager"
 import RenderStats from "./threex.renderstats.js";
 
 const loop = (renderer, scene, camera, controls) => {
-  var rendererStats	= new RenderStats()
-  rendererStats.domElement.style.position	= 'absolute'
-  rendererStats.domElement.style.left	= '0px'
-  rendererStats.domElement.style.bottom	= '0px'
-  document.body.appendChild( rendererStats.domElement )
-
+  let rendererStats = createRenderStats();
   let clock = new THREE.Clock();
   const animate = () => {
     controls.update(clock.getDelta());
@@ -25,6 +20,19 @@ const loop = (renderer, scene, camera, controls) => {
   };
   animate(renderer, scene, camera, controls);
 };
+
+const createRenderStats = () => {
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    let rendererStats	= new RenderStats()
+    rendererStats.domElement.style.position	= 'absolute'
+    rendererStats.domElement.style.left	= '0px'
+    rendererStats.domElement.style.bottom	= '0px'
+    document.body.appendChild( rendererStats.domElement )
+    console.log()
+    return rendererStats;  
+  }
+  return { update: () => {}};
+}
 
 const createRenderer = () => {
   let renderer = new THREE.WebGLRenderer({ antialias: true });
