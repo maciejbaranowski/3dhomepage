@@ -48,11 +48,11 @@ export class ObjectsCreator {
       font: font,
       size: 2,
       height: 0.2,
-      curveSegments: 30,
+      curveSegments: 5,
       bevelEnabled: true,
       bevelThickness: 0.1,
       bevelSize: 0.1,
-      bevelSegments: 2
+      bevelSegments: 1
     });
     let mesh = new THREE.Mesh(geometry, textMaterial);
     mesh.castShadow = true;
@@ -80,22 +80,24 @@ export class ObjectsCreator {
     var objLoader = new THREE.OBJLoader(this.loadingManager);
     objLoader.load("./models/Picket Fence.obj", object => {
       let fenceMiddle = object.children[1];
+      let wholeFenceGeometry = new THREE.Geometry();
       fenceMiddle.scale.x = 0.1;
       fenceMiddle.scale.y = 0.1;
       fenceMiddle.scale.z = 0.1;
-      fenceMiddle.material = woodenFenceMaterial;
       fenceMiddle.castShadow = true;
       for (let i = 0; i < 24; i++) {
         let clone = fenceMiddle.clone();
         clone.position.x = i * 2.5 - 30.5;
         clone.position.z = -27;
-        scene.add(clone);
+        clone.updateMatrix();
+        wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
       for (let i = 0; i < 24; i++) {
         let clone = fenceMiddle.clone();
         clone.position.x = i * 2.5 - 30.5;
-        clone.position.z = 33;
-        scene.add(clone);
+        clone.position.z = 33;        
+        clone.updateMatrix();        
+        wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
       for (let i = 0; i < 24; i++) {
         let clone = fenceMiddle.clone();
@@ -104,7 +106,8 @@ export class ObjectsCreator {
         clone.rotation.y = THREE
           .Math
           .degToRad(90);
-        scene.add(clone);
+          clone.updateMatrix();          
+        wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
       for (let i = 0; i < 24; i++) {
         let clone = fenceMiddle.clone();
@@ -113,8 +116,11 @@ export class ObjectsCreator {
         clone.rotation.y = THREE
           .Math
           .degToRad(90);
-        scene.add(clone);
+        clone.updateMatrix();          
+        wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
+      let wholeFenceMesh = new THREE.Mesh(wholeFenceGeometry, woodenFenceMaterial);
+      scene.add(wholeFenceMesh);
     });
   };
 
