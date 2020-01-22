@@ -83,7 +83,7 @@ class FirstPersonControls {
   update = (delta) => {
     if (this.enabled === false) 
       return;
-    var actualMoveSpeed = delta * this.movementSpeed;
+    const actualMoveSpeed = delta * this.movementSpeed;
 
     if (this.moveForward || (this.autoForward && !this.moveBackward)) {
       this
@@ -99,13 +99,13 @@ class FirstPersonControls {
     
     this.checkBorders();
 
-    var actualLookSpeed = delta * this.lookSpeed;
+    let actualLookSpeed = delta * this.lookSpeed;
 
     if (!this.activeLook) {
       actualLookSpeed = 0;
     }
 
-    var verticalLookRatio = 1;
+    let verticalLookRatio = 1;
 
     if (this.constrainVertical) {
       verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
@@ -131,8 +131,8 @@ class FirstPersonControls {
         .mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
     }
 
-    var targetPosition = this.target,
-      position = this.object.position;
+    let targetPosition = this.target;
+    let position = this.object.position;
     targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
     targetPosition.y = position.y + 100 * Math.cos(this.phi);
     targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);

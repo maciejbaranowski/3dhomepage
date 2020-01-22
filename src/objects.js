@@ -34,8 +34,8 @@ export class ObjectsCreator {
   };
 
   createIndicatorBox = (scene, position) => {
-    var geometry = new THREE.IcosahedronGeometry(0.8);
-    var mesh = new THREE.Mesh(geometry, redShinyMaterial);
+    const geometry = new THREE.IcosahedronGeometry(0.8);
+    const mesh = new THREE.Mesh(geometry, redShinyMaterial);
     mesh
       .position
       .set(position[0], position[1], position[2]);
@@ -78,7 +78,10 @@ export class ObjectsCreator {
   };
 
   createFence = scene => {
-    var objLoader = new THREE.OBJLoader(this.loadingManager);
+    const numberOfFenceSegments = 24;
+    const fenceSegmentSize = 2.5;
+
+    const objLoader = new THREE.OBJLoader(this.loadingManager);
     objLoader.load("./models/Picket Fence.obj", object => {
       let fenceMiddle = object.children[1];
       let wholeFenceGeometry = new THREE.Geometry();
@@ -86,34 +89,34 @@ export class ObjectsCreator {
       fenceMiddle.scale.y = 0.1;
       fenceMiddle.scale.z = 0.1;
       fenceMiddle.castShadow = true;
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < numberOfFenceSegments; i++) {
         let clone = fenceMiddle.clone();
-        clone.position.x = i * 2.5 - 30.5;
+        clone.position.x = i * fenceSegmentSize - 30.5;
         clone.position.z = -27;
         clone.updateMatrix();
         wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < numberOfFenceSegments; i++) {
         let clone = fenceMiddle.clone();
-        clone.position.x = i * 2.5 - 30.5;
+        clone.position.x = i * fenceSegmentSize - 30.5;
         clone.position.z = 33;        
         clone.updateMatrix();        
         wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < numberOfFenceSegments; i++) {
         let clone = fenceMiddle.clone();
         clone.position.x = 32.75;
-        clone.position.z = i * 2.5 - 26.75;
+        clone.position.z = i * fenceSegmentSize - 26.75;
         clone.rotation.y = THREE
           .Math
           .degToRad(90);
           clone.updateMatrix();          
         wholeFenceGeometry.merge(new THREE.Geometry().fromBufferGeometry(clone.geometry), clone.matrix);
       }
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < numberOfFenceSegments; i++) {
         let clone = fenceMiddle.clone();
         clone.position.x = -27;
-        clone.position.z = i * 2.5 - 26.75;
+        clone.position.z = i * fenceSegmentSize - 26.75;
         clone.rotation.y = THREE
           .Math
           .degToRad(90);
@@ -126,12 +129,12 @@ export class ObjectsCreator {
   };
 
   loadObjMtl = (name, callback) => {
-    var mtlLoader = new THREE.MTLLoader(this.loadingManager);
+    const mtlLoader = new THREE.MTLLoader(this.loadingManager);
     mtlLoader.setTexturePath("./models/");
     mtlLoader.setPath("./models/");
     mtlLoader.load(name + ".mtl", (materials) => {
       materials.preload();
-      var objLoader = new THREE.OBJLoader(this.loadingManager);
+      const objLoader = new THREE.OBJLoader(this.loadingManager);
       objLoader.setMaterials(materials);
       objLoader.load("./models/" + name + ".obj", callback);
     });

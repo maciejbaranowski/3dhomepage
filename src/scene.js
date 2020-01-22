@@ -18,7 +18,7 @@ const loop = (renderer, scene, camera, controls) => {
     rendererStats.update(renderer);
     requestAnimationFrame(animate);
   };
-  animate(renderer, scene, camera, controls);
+  animate();
 };
 
 const createRenderStats = () => {

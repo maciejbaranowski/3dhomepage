@@ -3,7 +3,7 @@ import * as THREE from "three";
 import {createInitialInformationDiv, createLoadingModal, updateLoadingModal, closeLoadingModal} from "./modals";
 
 export const createLoadingManager = (lang) => {
-  var manager = new THREE.LoadingManager();
+  const manager = new THREE.LoadingManager();
   manager.onStart = function (url, itemsLoaded, itemsTotal) {
     createLoadingModal();
   };
