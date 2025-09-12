@@ -4,7 +4,7 @@ import { TextureLoader, RepeatWrapping } from 'three'
 import { Plane } from '@react-three/drei'
 
 function Environment3D() {
-  const grassTexture = useLoader(TextureLoader, '/textures/grass.jpg')
+  const grassTexture = useLoader(TextureLoader, 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
   
   // Configure texture wrapping
   grassTexture.wrapS = grassTexture.wrapT = RepeatWrapping
